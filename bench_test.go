@@ -34,7 +34,7 @@ func BenchmarkAddSafe(b *testing.B) {
 }
 
 func BenchmarkAddUnsafe(b *testing.B) {
-	benchAdd(b, NewThreadUnsafeSet())
+	benchAdd(b, NewUnsafeSet())
 }
 
 func benchRemove(b *testing.B, s Set) {
@@ -54,7 +54,7 @@ func BenchmarkRemoveSafe(b *testing.B) {
 }
 
 func BenchmarkRemoveUnsafe(b *testing.B) {
-	benchRemove(b, NewThreadUnsafeSet())
+	benchRemove(b, NewUnsafeSet())
 }
 
 func benchCardinality(b *testing.B, s Set) {
@@ -68,7 +68,7 @@ func BenchmarkCardinalitySafe(b *testing.B) {
 }
 
 func BenchmarkCardinalityUnsafe(b *testing.B) {
-	benchCardinality(b, NewThreadUnsafeSet())
+	benchCardinality(b, NewUnsafeSet())
 }
 
 func benchClear(b *testing.B, s Set) {
@@ -83,7 +83,7 @@ func BenchmarkClearSafe(b *testing.B) {
 }
 
 func BenchmarkClearUnsafe(b *testing.B) {
-	benchClear(b, NewThreadUnsafeSet())
+	benchClear(b, NewUnsafeSet())
 }
 
 func benchClone(b *testing.B, n int, s Set) {
@@ -103,7 +103,7 @@ func BenchmarkClone1Safe(b *testing.B) {
 }
 
 func BenchmarkClone1Unsafe(b *testing.B) {
-	benchClone(b, 1, NewThreadUnsafeSet())
+	benchClone(b, 1, NewUnsafeSet())
 }
 
 func BenchmarkClone10Safe(b *testing.B) {
@@ -111,7 +111,7 @@ func BenchmarkClone10Safe(b *testing.B) {
 }
 
 func BenchmarkClone10Unsafe(b *testing.B) {
-	benchClone(b, 10, NewThreadUnsafeSet())
+	benchClone(b, 10, NewUnsafeSet())
 }
 
 func BenchmarkClone100Safe(b *testing.B) {
@@ -119,7 +119,7 @@ func BenchmarkClone100Safe(b *testing.B) {
 }
 
 func BenchmarkClone100Unsafe(b *testing.B) {
-	benchClone(b, 100, NewThreadUnsafeSet())
+	benchClone(b, 100, NewUnsafeSet())
 }
 
 func benchContains(b *testing.B, n int, s Set) {
@@ -141,7 +141,7 @@ func BenchmarkContains1Safe(b *testing.B) {
 }
 
 func BenchmarkContains1Unsafe(b *testing.B) {
-	benchContains(b, 1, NewThreadUnsafeSet())
+	benchContains(b, 1, NewUnsafeSet())
 }
 
 func BenchmarkContains10Safe(b *testing.B) {
@@ -149,7 +149,7 @@ func BenchmarkContains10Safe(b *testing.B) {
 }
 
 func BenchmarkContains10Unsafe(b *testing.B) {
-	benchContains(b, 10, NewThreadUnsafeSet())
+	benchContains(b, 10, NewUnsafeSet())
 }
 
 func BenchmarkContains100Safe(b *testing.B) {
@@ -157,7 +157,7 @@ func BenchmarkContains100Safe(b *testing.B) {
 }
 
 func BenchmarkContains100Unsafe(b *testing.B) {
-	benchContains(b, 100, NewThreadUnsafeSet())
+	benchContains(b, 100, NewUnsafeSet())
 }
 
 func benchEqual(b *testing.B, n int, s, t Set) {
@@ -178,7 +178,7 @@ func BenchmarkEqual1Safe(b *testing.B) {
 }
 
 func BenchmarkEqual1Unsafe(b *testing.B) {
-	benchEqual(b, 1, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchEqual(b, 1, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkEqual10Safe(b *testing.B) {
@@ -186,7 +186,7 @@ func BenchmarkEqual10Safe(b *testing.B) {
 }
 
 func BenchmarkEqual10Unsafe(b *testing.B) {
-	benchEqual(b, 10, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchEqual(b, 10, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkEqual100Safe(b *testing.B) {
@@ -194,7 +194,7 @@ func BenchmarkEqual100Safe(b *testing.B) {
 }
 
 func BenchmarkEqual100Unsafe(b *testing.B) {
-	benchEqual(b, 100, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchEqual(b, 100, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func benchDifference(b *testing.B, n int, s, t Set) {
@@ -230,7 +230,7 @@ func BenchmarkIsSubset1Safe(b *testing.B) {
 }
 
 func BenchmarkIsSubset1Unsafe(b *testing.B) {
-	benchIsSubset(b, 1, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsSubset(b, 1, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkIsSubset10Safe(b *testing.B) {
@@ -238,7 +238,7 @@ func BenchmarkIsSubset10Safe(b *testing.B) {
 }
 
 func BenchmarkIsSubset10Unsafe(b *testing.B) {
-	benchIsSubset(b, 10, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsSubset(b, 10, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkIsSubset100Safe(b *testing.B) {
@@ -246,7 +246,7 @@ func BenchmarkIsSubset100Safe(b *testing.B) {
 }
 
 func BenchmarkIsSubset100Unsafe(b *testing.B) {
-	benchIsSubset(b, 100, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsSubset(b, 100, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func benchIsSuperset(b *testing.B, n int, s, t Set) {
@@ -267,7 +267,7 @@ func BenchmarkIsSuperset1Safe(b *testing.B) {
 }
 
 func BenchmarkIsSuperset1Unsafe(b *testing.B) {
-	benchIsSuperset(b, 1, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsSuperset(b, 1, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkIsSuperset10Safe(b *testing.B) {
@@ -275,7 +275,7 @@ func BenchmarkIsSuperset10Safe(b *testing.B) {
 }
 
 func BenchmarkIsSuperset10Unsafe(b *testing.B) {
-	benchIsSuperset(b, 10, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsSuperset(b, 10, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkIsSuperset100Safe(b *testing.B) {
@@ -283,7 +283,7 @@ func BenchmarkIsSuperset100Safe(b *testing.B) {
 }
 
 func BenchmarkIsSuperset100Unsafe(b *testing.B) {
-	benchIsSuperset(b, 100, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsSuperset(b, 100, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func benchIsProperSubset(b *testing.B, n int, s, t Set) {
@@ -304,7 +304,7 @@ func BenchmarkIsProperSubset1Safe(b *testing.B) {
 }
 
 func BenchmarkIsProperSubset1Unsafe(b *testing.B) {
-	benchIsProperSubset(b, 1, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsProperSubset(b, 1, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkIsProperSubset10Safe(b *testing.B) {
@@ -312,7 +312,7 @@ func BenchmarkIsProperSubset10Safe(b *testing.B) {
 }
 
 func BenchmarkIsProperSubset10Unsafe(b *testing.B) {
-	benchIsProperSubset(b, 10, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsProperSubset(b, 10, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkIsProperSubset100Safe(b *testing.B) {
@@ -320,7 +320,7 @@ func BenchmarkIsProperSubset100Safe(b *testing.B) {
 }
 
 func BenchmarkIsProperSubset100Unsafe(b *testing.B) {
-	benchIsProperSubset(b, 100, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsProperSubset(b, 100, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func benchIsProperSuperset(b *testing.B, n int, s, t Set) {
@@ -341,7 +341,7 @@ func BenchmarkIsProperSuperset1Safe(b *testing.B) {
 }
 
 func BenchmarkIsProperSuperset1Unsafe(b *testing.B) {
-	benchIsProperSuperset(b, 1, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsProperSuperset(b, 1, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkIsProperSuperset10Safe(b *testing.B) {
@@ -349,7 +349,7 @@ func BenchmarkIsProperSuperset10Safe(b *testing.B) {
 }
 
 func BenchmarkIsProperSuperset10Unsafe(b *testing.B) {
-	benchIsProperSuperset(b, 10, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsProperSuperset(b, 10, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkIsProperSuperset100Safe(b *testing.B) {
@@ -357,7 +357,7 @@ func BenchmarkIsProperSuperset100Safe(b *testing.B) {
 }
 
 func BenchmarkIsProperSuperset100Unsafe(b *testing.B) {
-	benchIsProperSuperset(b, 100, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIsProperSuperset(b, 100, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkDifference1Safe(b *testing.B) {
@@ -365,7 +365,7 @@ func BenchmarkDifference1Safe(b *testing.B) {
 }
 
 func BenchmarkDifference1Unsafe(b *testing.B) {
-	benchDifference(b, 1, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchDifference(b, 1, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkDifference10Safe(b *testing.B) {
@@ -373,7 +373,7 @@ func BenchmarkDifference10Safe(b *testing.B) {
 }
 
 func BenchmarkDifference10Unsafe(b *testing.B) {
-	benchDifference(b, 10, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchDifference(b, 10, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkDifference100Safe(b *testing.B) {
@@ -381,7 +381,7 @@ func BenchmarkDifference100Safe(b *testing.B) {
 }
 
 func BenchmarkDifference100Unsafe(b *testing.B) {
-	benchDifference(b, 100, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchDifference(b, 100, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func benchIntersect(b *testing.B, n int, s, t Set) {
@@ -404,7 +404,7 @@ func BenchmarkIntersect1Safe(b *testing.B) {
 }
 
 func BenchmarkIntersect1Unsafe(b *testing.B) {
-	benchIntersect(b, 1, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIntersect(b, 1, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkIntersect10Safe(b *testing.B) {
@@ -412,7 +412,7 @@ func BenchmarkIntersect10Safe(b *testing.B) {
 }
 
 func BenchmarkIntersect10Unsafe(b *testing.B) {
-	benchIntersect(b, 10, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIntersect(b, 10, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkIntersect100Safe(b *testing.B) {
@@ -420,7 +420,7 @@ func BenchmarkIntersect100Safe(b *testing.B) {
 }
 
 func BenchmarkIntersect100Unsafe(b *testing.B) {
-	benchIntersect(b, 100, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchIntersect(b, 100, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func benchSymmetricDifference(b *testing.B, n int, s, t Set) {
@@ -443,7 +443,7 @@ func BenchmarkSymmetricDifference1Safe(b *testing.B) {
 }
 
 func BenchmarkSymmetricDifference1Unsafe(b *testing.B) {
-	benchSymmetricDifference(b, 1, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchSymmetricDifference(b, 1, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkSymmetricDifference10Safe(b *testing.B) {
@@ -451,7 +451,7 @@ func BenchmarkSymmetricDifference10Safe(b *testing.B) {
 }
 
 func BenchmarkSymmetricDifference10Unsafe(b *testing.B) {
-	benchSymmetricDifference(b, 10, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchSymmetricDifference(b, 10, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkSymmetricDifference100Safe(b *testing.B) {
@@ -459,7 +459,7 @@ func BenchmarkSymmetricDifference100Safe(b *testing.B) {
 }
 
 func BenchmarkSymmetricDifference100Unsafe(b *testing.B) {
-	benchSymmetricDifference(b, 100, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchSymmetricDifference(b, 100, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func benchUnion(b *testing.B, n int, s, t Set) {
@@ -482,7 +482,7 @@ func BenchmarkUnion1Safe(b *testing.B) {
 }
 
 func BenchmarkUnion1Unsafe(b *testing.B) {
-	benchUnion(b, 1, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchUnion(b, 1, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkUnion10Safe(b *testing.B) {
@@ -490,7 +490,7 @@ func BenchmarkUnion10Safe(b *testing.B) {
 }
 
 func BenchmarkUnion10Unsafe(b *testing.B) {
-	benchUnion(b, 10, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchUnion(b, 10, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func BenchmarkUnion100Safe(b *testing.B) {
@@ -498,7 +498,7 @@ func BenchmarkUnion100Safe(b *testing.B) {
 }
 
 func BenchmarkUnion100Unsafe(b *testing.B) {
-	benchUnion(b, 100, NewThreadUnsafeSet(), NewThreadUnsafeSet())
+	benchUnion(b, 100, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func benchEach(b *testing.B, n int, s Set) {
@@ -520,7 +520,7 @@ func BenchmarkEach1Safe(b *testing.B) {
 }
 
 func BenchmarkEach1Unsafe(b *testing.B) {
-	benchEach(b, 1, NewThreadUnsafeSet())
+	benchEach(b, 1, NewUnsafeSet())
 }
 
 func BenchmarkEach10Safe(b *testing.B) {
@@ -528,7 +528,7 @@ func BenchmarkEach10Safe(b *testing.B) {
 }
 
 func BenchmarkEach10Unsafe(b *testing.B) {
-	benchEach(b, 10, NewThreadUnsafeSet())
+	benchEach(b, 10, NewUnsafeSet())
 }
 
 func BenchmarkEach100Safe(b *testing.B) {
@@ -536,7 +536,7 @@ func BenchmarkEach100Safe(b *testing.B) {
 }
 
 func BenchmarkEach100Unsafe(b *testing.B) {
-	benchEach(b, 100, NewThreadUnsafeSet())
+	benchEach(b, 100, NewUnsafeSet())
 }
 
 func benchIter(b *testing.B, n int, s Set) {
@@ -559,7 +559,7 @@ func BenchmarkIter1Safe(b *testing.B) {
 }
 
 func BenchmarkIter1Unsafe(b *testing.B) {
-	benchIter(b, 1, NewThreadUnsafeSet())
+	benchIter(b, 1, NewUnsafeSet())
 }
 
 func BenchmarkIter10Safe(b *testing.B) {
@@ -567,7 +567,7 @@ func BenchmarkIter10Safe(b *testing.B) {
 }
 
 func BenchmarkIter10Unsafe(b *testing.B) {
-	benchIter(b, 10, NewThreadUnsafeSet())
+	benchIter(b, 10, NewUnsafeSet())
 }
 
 func BenchmarkIter100Safe(b *testing.B) {
@@ -575,7 +575,7 @@ func BenchmarkIter100Safe(b *testing.B) {
 }
 
 func BenchmarkIter100Unsafe(b *testing.B) {
-	benchIter(b, 100, NewThreadUnsafeSet())
+	benchIter(b, 100, NewUnsafeSet())
 }
 
 func benchIterator(b *testing.B, n int, s Set) {
@@ -598,7 +598,7 @@ func BenchmarkIterator1Safe(b *testing.B) {
 }
 
 func BenchmarkIterator1Unsafe(b *testing.B) {
-	benchIterator(b, 1, NewThreadUnsafeSet())
+	benchIterator(b, 1, NewUnsafeSet())
 }
 
 func BenchmarkIterator10Safe(b *testing.B) {
@@ -606,7 +606,7 @@ func BenchmarkIterator10Safe(b *testing.B) {
 }
 
 func BenchmarkIterator10Unsafe(b *testing.B) {
-	benchIterator(b, 10, NewThreadUnsafeSet())
+	benchIterator(b, 10, NewUnsafeSet())
 }
 
 func BenchmarkIterator100Safe(b *testing.B) {
@@ -614,7 +614,7 @@ func BenchmarkIterator100Safe(b *testing.B) {
 }
 
 func BenchmarkIterator100Unsafe(b *testing.B) {
-	benchIterator(b, 100, NewThreadUnsafeSet())
+	benchIterator(b, 100, NewUnsafeSet())
 }
 
 func benchString(b *testing.B, n int, s Set) {
@@ -634,7 +634,7 @@ func BenchmarkString1Safe(b *testing.B) {
 }
 
 func BenchmarkString1Unsafe(b *testing.B) {
-	benchString(b, 1, NewThreadUnsafeSet())
+	benchString(b, 1, NewUnsafeSet())
 }
 
 func BenchmarkString10Safe(b *testing.B) {
@@ -642,7 +642,7 @@ func BenchmarkString10Safe(b *testing.B) {
 }
 
 func BenchmarkString10Unsafe(b *testing.B) {
-	benchString(b, 10, NewThreadUnsafeSet())
+	benchString(b, 10, NewUnsafeSet())
 }
 
 func BenchmarkString100Safe(b *testing.B) {
@@ -650,7 +650,7 @@ func BenchmarkString100Safe(b *testing.B) {
 }
 
 func BenchmarkString100Unsafe(b *testing.B) {
-	benchString(b, 100, NewThreadUnsafeSet())
+	benchString(b, 100, NewUnsafeSet())
 }
 
 func benchToSlice(b *testing.B, s Set) {
@@ -670,5 +670,5 @@ func BenchmarkToSliceSafe(b *testing.B) {
 }
 
 func BenchmarkToSliceUnsafe(b *testing.B) {
-	benchToSlice(b, NewThreadUnsafeSet())
+	benchToSlice(b, NewUnsafeSet())
 }

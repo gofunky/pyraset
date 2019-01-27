@@ -1,0 +1,10 @@
+github.com/ajstarks/svgo v0.0.0-20181006003313-6ce6a3bcf6cd h1:JdtityihAc6A+gVfYh6vGXfZQg+XOLyBvla/7NbXFCg=
+github.com/ajstarks/svgo v0.0.0-20181006003313-6ce6a3bcf6cd/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
+github.com/gofunky/hashstructure v1.1.1 h1:myOndgPsDfIZYTgq+tOL0WGn8VIZIcvvSo3fRqEDtx0=
+github.com/gofunky/hashstructure v1.1.1/go.mod h1:ChxDtCwR2t7VCV6BmlfzW97DGZtwOtyVPy7LVjF8j5E=
+github.com/minio/highwayhash v0.0.0-20190112144901-fc990dfafa15 h1:rE7oyyC+nMFIJEN1WcwKQs0aSDgJq3f6T2wsTsUtWhw=
+github.com/minio/highwayhash v0.0.0-20190112144901-fc990dfafa15/go.mod h1:NL8wme5P5MoscwAkXfGroz3VgpCdhBw3KYOu5mEsvpU=
+golang.org/x/sys v0.0.0-20190124100055-b90733256f2e h1:3GIlrlVLfkoipSReOMNAgApI0ajnalyLa/EZHHca/XI=
+golang.org/x/sys v0.0.0-20190124100055-b90733256f2e/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+golang.org/x/tools v0.0.0-20190125232054-d66bd3c5d5a6 h1:iZgcI2DDp6zW5v9Z/5+f0NuqoxNdmzg4hivjk2WLXpY=
+golang.org/x/tools v0.0.0-20190125232054-d66bd3c5d5a6/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=

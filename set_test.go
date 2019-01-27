@@ -1,28 +1,3 @@
-/*
-Open Source Initiative OSI - The MIT License (MIT):Licensing
-
-The MIT License (MIT)
-Copyright (c) 2013 Ralph Caraveo (deckarep@gmail.com)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-
 package mapset
 
 import "testing"
@@ -36,7 +11,7 @@ func makeSet(ints []int) Set {
 }
 
 func makeUnsafeSet(ints []int) Set {
-	set := NewThreadUnsafeSet()
+	set := NewUnsafeSet()
 	for _, i := range ints {
 		set.Add(i)
 	}
@@ -55,15 +30,15 @@ func Test_NewSet(t *testing.T) {
 		t.Error("NewSet should start out as an empty set")
 	}
 
-	assertEqual(NewSetFromSlice([]interface{}{}), NewSet(), t)
-	assertEqual(NewSetFromSlice([]interface{}{1}), NewSet(1), t)
-	assertEqual(NewSetFromSlice([]interface{}{1, 2}), NewSet(1, 2), t)
-	assertEqual(NewSetFromSlice([]interface{}{"a"}), NewSet("a"), t)
-	assertEqual(NewSetFromSlice([]interface{}{"a", "b"}), NewSet("a", "b"), t)
+	assertEqual(NewSet(), NewSet(), t)
+	assertEqual(NewSet(1), NewSet(1), t)
+	assertEqual(NewSet(1, 2), NewSet(1, 2), t)
+	assertEqual(NewSet("a"), NewSet("a"), t)
+	assertEqual(NewSet("a", "b"), NewSet("a", "b"), t)
 }
 
 func Test_NewUnsafeSet(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 
 	if a.Cardinality() != 0 {
 		t.Error("NewSet should start out as an empty set")
@@ -177,7 +152,7 @@ func Test_ContainsSet(t *testing.T) {
 }
 
 func Test_ContainsUnsafeSet(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 
 	a.Add(71)
 
@@ -277,7 +252,7 @@ func Test_CardinalitySet(t *testing.T) {
 }
 
 func Test_CardinalityUnsafeSet(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 
 	if a.Cardinality() != 0 {
 		t.Error("set should be an empty set")
@@ -351,7 +326,7 @@ func Test_SetIsProperSubset(t *testing.T) {
 func Test_UnsafeSetIsSubset(t *testing.T) {
 	a := makeUnsafeSet([]int{1, 2, 3, 5, 7})
 
-	b := NewThreadUnsafeSet()
+	b := NewUnsafeSet()
 	b.Add(3)
 	b.Add(5)
 	b.Add(7)
@@ -369,7 +344,7 @@ func Test_UnsafeSetIsSubset(t *testing.T) {
 
 func Test_UnsafeSetIsProperSubset(t *testing.T) {
 	a := makeUnsafeSet([]int{1, 2, 3, 5, 7})
-	b := NewThreadUnsafeSet()
+	b := NewUnsafeSet()
 	b.Add(7)
 	b.Add(1)
 	b.Add(5)
@@ -455,14 +430,14 @@ func Test_SetIsProperSuperset(t *testing.T) {
 }
 
 func Test_UnsafeSetIsSuperset(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 	a.Add(9)
 	a.Add(5)
 	a.Add(2)
 	a.Add(1)
 	a.Add(11)
 
-	b := NewThreadUnsafeSet()
+	b := NewUnsafeSet()
 	b.Add(5)
 	b.Add(2)
 	b.Add(11)
@@ -479,12 +454,12 @@ func Test_UnsafeSetIsSuperset(t *testing.T) {
 }
 
 func Test_UnsafeSetIsProperSuperset(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 	a.Add(5)
 	a.Add(2)
 	a.Add(11)
 
-	b := NewThreadUnsafeSet()
+	b := NewUnsafeSet()
 	b.Add(2)
 	b.Add(5)
 	b.Add(11)
@@ -552,9 +527,9 @@ func Test_SetUnion(t *testing.T) {
 }
 
 func Test_UnsafeSetUnion(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 
-	b := NewThreadUnsafeSet()
+	b := NewUnsafeSet()
 	b.Add(1)
 	b.Add(2)
 	b.Add(3)
@@ -567,7 +542,7 @@ func Test_UnsafeSetUnion(t *testing.T) {
 		t.Error("set c is unioned with an empty set and therefore should have 5 elements in it")
 	}
 
-	d := NewThreadUnsafeSet()
+	d := NewUnsafeSet()
 	d.Add(10)
 	d.Add(14)
 	d.Add(0)
@@ -577,7 +552,7 @@ func Test_UnsafeSetUnion(t *testing.T) {
 		t.Error("set e should should have 8 elements in it after being unioned with set c to d")
 	}
 
-	f := NewThreadUnsafeSet()
+	f := NewUnsafeSet()
 	f.Add(14)
 	f.Add(3)
 
@@ -615,12 +590,12 @@ func Test_SetIntersect(t *testing.T) {
 }
 
 func Test_UnsafeSetIntersect(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 	a.Add(1)
 	a.Add(3)
 	a.Add(5)
 
-	b := NewThreadUnsafeSet()
+	b := NewUnsafeSet()
 	a.Add(2)
 	a.Add(4)
 	a.Add(6)
@@ -663,12 +638,12 @@ func Test_SetDifference(t *testing.T) {
 }
 
 func Test_UnsafeSetDifference(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 	a.Add(1)
 	a.Add(2)
 	a.Add(3)
 
-	b := NewThreadUnsafeSet()
+	b := NewUnsafeSet()
 	b.Add(1)
 	b.Add(3)
 	b.Add(4)
@@ -706,13 +681,13 @@ func Test_SetSymmetricDifference(t *testing.T) {
 }
 
 func Test_UnsafeSetSymmetricDifference(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 	a.Add(1)
 	a.Add(2)
 	a.Add(3)
 	a.Add(45)
 
-	b := NewThreadUnsafeSet()
+	b := NewUnsafeSet()
 	b.Add(1)
 	b.Add(3)
 	b.Add(4)
@@ -765,8 +740,8 @@ func Test_SetEqual(t *testing.T) {
 }
 
 func Test_UnsafeSetEqual(t *testing.T) {
-	a := NewThreadUnsafeSet()
-	b := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
+	b := NewUnsafeSet()
 
 	if !a.Equal(b) {
 		t.Error("Both a and b are empty sets, and should be equal")
@@ -801,6 +776,82 @@ func Test_UnsafeSetEqual(t *testing.T) {
 	}
 }
 
+func Test_SetHash(t *testing.T) {
+	a := NewSet()
+	b := NewSet()
+
+	a.Add("test")
+	a.Remove("test")
+
+	if a.Hash() != b.Hash() {
+		t.Error("Both a and b are empty sets, and should have the same hashes")
+	}
+
+	a.Add(10)
+
+	if a.Hash() == b.Hash() {
+		t.Error("a should not be equal to b because b is empty and a has item 1 in it")
+	}
+
+	b.Add(10)
+
+	if a.Hash() != b.Hash() {
+		t.Error("a is now equal again to b because both have the item 10 in them")
+	}
+
+	b.Add(8)
+	b.Add(3)
+	b.Add(47)
+
+	if a.Hash() == b.Hash() {
+		t.Error("b has 3 more elements in it so therefore should not be equal to a")
+	}
+
+	a.Add(3, 8, 47)
+
+	if a.Hash() != b.Hash() {
+		t.Error("a and b should be equal with the same number of elements")
+	}
+}
+
+func Test_UnsafeSetHash(t *testing.T) {
+	a := NewUnsafeSet()
+	b := NewUnsafeSet()
+
+	a.Add("test")
+	a.Remove("test")
+
+	if a.Hash() != b.Hash() {
+		t.Error("Both a and b are empty sets, and should have the same hashes")
+	}
+
+	a.Add(10)
+
+	if a.Hash() == b.Hash() {
+		t.Error("a should not be equal to b because b is empty and a has item 1 in it")
+	}
+
+	b.Add(10)
+
+	if a.Hash() != b.Hash() {
+		t.Error("a is now equal again to b because both have the item 10 in them")
+	}
+
+	b.Add(8)
+	b.Add(3)
+	b.Add(47)
+
+	if a.Hash() == b.Hash() {
+		t.Error("b has 3 more elements in it so therefore should not be equal to a")
+	}
+
+	a.Add(3, 8, 47)
+
+	if a.Hash() != b.Hash() {
+		t.Error("a and b should be equal with the same number of elements")
+	}
+}
+
 func Test_SetClone(t *testing.T) {
 	a := NewSet()
 	a.Add(1)
@@ -826,7 +877,7 @@ func Test_SetClone(t *testing.T) {
 }
 
 func Test_UnsafeSetClone(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 	a.Add(1)
 	a.Add(2)
 
@@ -899,14 +950,14 @@ func Test_Iter(t *testing.T) {
 }
 
 func Test_UnsafeIter(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 
 	a.Add("Z")
 	a.Add("Y")
 	a.Add("X")
 	a.Add("W")
 
-	b := NewThreadUnsafeSet()
+	b := NewUnsafeSet()
 	for val := range a.Iter() {
 		b.Add(val)
 	}
@@ -935,14 +986,14 @@ func Test_Iterator(t *testing.T) {
 }
 
 func Test_UnsafeIterator(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 
 	a.Add("Z")
 	a.Add("Y")
 	a.Add("X")
 	a.Add("W")
 
-	b := NewThreadUnsafeSet()
+	b := NewUnsafeSet()
 	for val := range a.Iterator().C {
 		b.Add(val)
 	}
@@ -1000,14 +1051,14 @@ func Test_PopSafe(t *testing.T) {
 }
 
 func Test_PopUnsafe(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewUnsafeSet()
 
 	a.Add("a")
 	a.Add("b")
 	a.Add("c")
 	a.Add("d")
 
-	captureSet := NewThreadUnsafeSet()
+	captureSet := NewUnsafeSet()
 	captureSet.Add(a.Pop())
 	captureSet.Add(a.Pop())
 	captureSet.Add(a.Pop())
@@ -1032,7 +1083,7 @@ func Test_PopUnsafe(t *testing.T) {
 }
 
 func Test_PowerSet(t *testing.T) {
-	a := NewThreadUnsafeSet()
+	a := NewSet()
 
 	a.Add(1)
 	a.Add("delta")
@@ -1111,9 +1162,9 @@ func Test_EmptySetProperties(t *testing.T) {
 }
 
 func Test_CartesianProduct(t *testing.T) {
-	a := NewThreadUnsafeSet()
-	b := NewThreadUnsafeSet()
-	empty := NewThreadUnsafeSet()
+	a := NewSet()
+	b := NewSet()
+	empty := NewSet()
 
 	a.Add(1)
 	a.Add(2)
@@ -1156,45 +1207,4 @@ func Test_ToSliceUnthreadsafe(t *testing.T) {
 			t.Errorf("Set is missing element: %v", i)
 		}
 	}
-}
-
-func Test_Example(t *testing.T) {
-	/*
-	   requiredClasses := NewSet()
-	   requiredClasses.Add("Cooking")
-	   requiredClasses.Add("English")
-	   requiredClasses.Add("Math")
-	   requiredClasses.Add("Biology")
-
-	   scienceSlice := []interface{}{"Biology", "Chemistry"}
-	   scienceClasses := NewSetFromSlice(scienceSlice)
-
-	   electiveClasses := NewSet()
-	   electiveClasses.Add("Welding")
-	   electiveClasses.Add("Music")
-	   electiveClasses.Add("Automotive")
-
-	   bonusClasses := NewSet()
-	   bonusClasses.Add("Go Programming")
-	   bonusClasses.Add("Python Programming")
-
-	   //Show me all the available classes I can take
-	   allClasses := requiredClasses.Union(scienceClasses).Union(electiveClasses).Union(bonusClasses)
-	   fmt.Println(allClasses) //Set{English, Chemistry, Automotive, Cooking, Math, Biology, Welding, Music, Go Programming}
-
-	   //Is cooking considered a science class?
-	   fmt.Println(scienceClasses.Contains("Cooking")) //false
-
-	   //Show me all classes that are not science classes, since I hate science.
-	   fmt.Println(allClasses.Difference(scienceClasses)) //Set{English, Automotive, Cooking, Math, Welding, Music, Go Programming}
-
-	   //Which science classes are also required classes?
-	   fmt.Println(scienceClasses.Intersect(requiredClasses)) //Set{Biology}
-
-	   //How many bonus classes do you offer?
-	   fmt.Println(bonusClasses.Cardinality()) //2
-
-	   //Do you have the following classes? Welding, Automotive and English?
-	   fmt.Println(allClasses.ContainsAll("Welding", "Automotive", "English"))
-	*/
 }

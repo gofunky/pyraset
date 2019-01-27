@@ -9,12 +9,12 @@ type YourType struct {
 }
 
 func ExampleIterator() {
-	set := NewSetFromSlice([]interface{}{
+	set := NewSet(
 		&YourType{Name: "Alise"},
 		&YourType{Name: "Bob"},
 		&YourType{Name: "John"},
 		&YourType{Name: "Nick"},
-	})
+	)
 
 	var found *YourType
 	it := set.Iterator()
