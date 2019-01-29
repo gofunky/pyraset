@@ -6,10 +6,14 @@
 // complexity improvement and that can enforce mutual exclusion through other means.
 package mapset
 
+import "github.com/gofunky/hashstructure"
+
 // Set is the primary interface provided by the mapset package.  It represents an unordered set of data and a
 // large number of operations that can be applied to that set.
 type Set interface {
-	// Add the given elements to the set.
+	hashstructure.Hashable
+
+	// Add the given elements to this set.
 	Add(i ...interface{})
 
 	// Cardinality determines the number of elements in the set.
@@ -78,14 +82,11 @@ type Set interface {
 	// Iterator that you can use to range over the set.
 	Iterator() *Iterator
 
-	// Remove the given elements from the set.
+	// Remove the given elements from this set.
 	Remove(i ...interface{})
 
 	// String provides a convenient string representation of the current state of the set.
 	String() string
-
-	// Hash generates the hash of this set.
-	Hash() uint64
 
 	// SymmetricDifference provides a new set with all elements which are  in either this set or the other set
 	// but not in both.
