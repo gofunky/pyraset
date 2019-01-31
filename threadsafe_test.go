@@ -165,6 +165,36 @@ func Test_EqualConcurrent(t *testing.T) {
 	wg.Wait()
 }
 
+func Test_UpdateHashConcurrent(t *testing.T) {
+	runtime.GOMAXPROCS(2)
+
+	s, ss := NewSet(), NewSet()
+	ints := rand.Perm(N)
+	for _, v := range ints {
+		subset := NewSet(v)
+		s.Add(subset)
+		ss.Add(subset)
+		subset.Clear()
+	}
+
+	var wg sync.WaitGroup
+	for range ints {
+		wg.Add(2)
+		go func() {
+			s.UpdateHash()
+			wg.Done()
+		}()
+		go func() {
+			ss.UpdateHash()
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+	if s.Hash() != ss.Hash() {
+		t.Error("a and b should be equal with the same number of elements")
+	}
+}
+
 func Test_IntersectConcurrent(t *testing.T) {
 	runtime.GOMAXPROCS(2)
 

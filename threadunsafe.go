@@ -6,57 +6,42 @@ import (
 	"fmt"
 	"github.com/OneOfOne/xxhash"
 	"github.com/gofunky/hashstructure"
-	"hash"
 	"strings"
 )
 
-var (
-	hasher      hash.Hash64
-	hashOptions *hashstructure.HashOptions
-)
-
-func init() {
-	hasher = xxhash.New64()
-	hashOptions = &hashstructure.HashOptions{
-		Hasher: hasher,
-	}
-}
-
 type threadUnsafeSet struct {
-	hash   uint64
-	anyMap map[uint64]interface{}
+	options     SetOptions
+	hashState   uint64
+	anyMap      map[uint64]interface{}
+	hashCache   map[interface{}]uint64
+	hashOptions *hashstructure.HashOptions
 }
 
-// OrderedPair represents a 2-tuple of values.
-type OrderedPair struct {
-	First  interface{}
-	Second interface{}
-}
-
-func newThreadUnsafeSet() threadUnsafeSet {
+func (o SetOptions) newThreadUnsafeSet() threadUnsafeSet {
+	hashOptions := &hashstructure.HashOptions{
+		Hasher: o.Hasher,
+	}
+	if hashOptions.Hasher == nil {
+		hashOptions.Hasher = xxhash.New64()
+	}
 	return threadUnsafeSet{
-		anyMap: make(map[uint64]interface{}),
+		options:     o,
+		anyMap:      make(map[uint64]interface{}),
+		hashCache:   make(map[interface{}]uint64),
+		hashOptions: hashOptions,
 	}
-}
-
-func (pair *OrderedPair) Equal(other OrderedPair) bool {
-	if pair.First == other.First &&
-		pair.Second == other.Second {
-		return true
-	}
-	return false
 }
 
 func (set *threadUnsafeSet) Add(i ...interface{}) {
 	for _, val := range i {
-		h := hashFor(val)
+		h := set.hashFor(val)
 		set.addWithHash(val, h)
 	}
 }
 
 func (set *threadUnsafeSet) addWithHash(val interface{}, h uint64) {
 	if _, ok := set.anyMap[h]; !ok {
-		set.hash = set.hash ^ h
+		set.hashState = set.hashState ^ h
 		set.anyMap[h] = val
 	}
 }
@@ -67,16 +52,17 @@ func (set *threadUnsafeSet) Contains(i ...interface{}) bool {
 	if argLength > cardinality {
 		return false
 	}
+	setHash := set.Hash()
 	if argLength == cardinality {
 		var inputHash uint64 = 0
 		for _, val := range i {
-			h := hashFor(val)
+			h := set.hashFor(val)
 			inputHash = inputHash ^ h
 		}
-		return inputHash == set.hash
+		return inputHash == setHash
 	}
 	for _, val := range i {
-		h := hashFor(val)
+		h := set.hashFor(val)
 		if !set.containsHash(h) {
 			return false
 		}
@@ -128,7 +114,12 @@ func (set *threadUnsafeSet) Union(other Set) Set {
 }
 
 func (set *threadUnsafeSet) Intersect(other Set) Set {
-	intersection := newThreadUnsafeSet()
+	intersection := threadUnsafeSet{
+		options:     set.options,
+		anyMap:      make(map[uint64]interface{}),
+		hashCache:   set.hashCache,
+		hashOptions: set.hashOptions,
+	}
 	otherCore := other.CoreSet()
 	// loop over smaller set
 	if set.Cardinality() < other.Cardinality() {
@@ -148,7 +139,12 @@ func (set *threadUnsafeSet) Intersect(other Set) Set {
 }
 
 func (set *threadUnsafeSet) Difference(other Set) Set {
-	difference := newThreadUnsafeSet()
+	difference := threadUnsafeSet{
+		options:     set.options,
+		anyMap:      make(map[uint64]interface{}),
+		hashCache:   set.hashCache,
+		hashOptions: set.hashOptions,
+	}
 	otherCore := other.CoreSet()
 	for h, elem := range set.anyMap {
 		if !otherCore.containsHash(h) {
@@ -165,15 +161,24 @@ func (set *threadUnsafeSet) SymmetricDifference(other Set) Set {
 }
 
 func (set *threadUnsafeSet) Clear() {
-	*set = newThreadUnsafeSet()
+	*set = threadUnsafeSet{
+		options:     set.options,
+		anyMap:      make(map[uint64]interface{}),
+		hashCache:   set.hashCache,
+		hashOptions: set.hashOptions,
+	}
 }
 
 func (set *threadUnsafeSet) Remove(i ...interface{}) {
 	for _, val := range i {
-		h := hashFor(val)
-		set.hash = set.hash ^ h
-		delete(set.anyMap, h)
+		h := set.hashFor(val)
+		set.removeWithHash(h)
 	}
+}
+
+func (set *threadUnsafeSet) removeWithHash(hash uint64) {
+	set.hashState = set.hashState ^ hash
+	delete(set.anyMap, hash)
 }
 
 func (set *threadUnsafeSet) Cardinality() int {
@@ -231,38 +236,41 @@ func (set *threadUnsafeSet) Clone() Set {
 		nextAny[key] = elem
 	}
 	return &threadUnsafeSet{
-		anyMap: nextAny,
-		hash:   set.hash,
+		options:     set.options,
+		hashCache:   set.hashCache,
+		anyMap:      nextAny,
+		hashState:   set.hashState,
+		hashOptions: set.hashOptions,
 	}
 }
 
 func (set *threadUnsafeSet) String() string {
-	items := make([]string, 0, set.Cardinality())
+	items := bytes.NewBufferString("Set{")
 
 	for _, elem := range set.anyMap {
-		items = append(items, fmt.Sprintf("%v", elem))
+		_, err := fmt.Fprintf(items, "%v, ", elem)
+		if err != nil {
+			panic(err)
+		}
 	}
-	return fmt.Sprintf("Set{%s}", strings.Join(items, ", "))
-}
-
-// String outputs a 2-tuple in the form "(A, B)".
-func (pair OrderedPair) String() string {
-	return fmt.Sprintf("(%v, %v)", pair.First, pair.Second)
+	items.Truncate(items.Len() - 2)
+	items.WriteString("}")
+	return items.String()
 }
 
 func (set *threadUnsafeSet) Pop() interface{} {
-	for _, item := range set.anyMap {
-		set.Remove(item)
+	for h, item := range set.anyMap {
+		set.removeWithHash(h)
 		return item
 	}
 	return nil
 }
 
-func (set *threadUnsafeSet) PowerSet(threadSafe ...bool) Set {
+func (set *threadUnsafeSet) PowerSet() Set {
 	var makeSafe = func(s Set) Set {
 		return s.ThreadSafe()
 	}
-	if len(threadSafe) == 0 || !threadSafe[0] {
+	if set.options.Unsafe {
 		makeSafe = func(s Set) Set {
 			return s
 		}
@@ -298,14 +306,11 @@ func (set *threadUnsafeSet) CartesianProduct(other Set) Set {
 	return cartProduct
 }
 
-func (set *threadUnsafeSet) ToSlice() []interface{} {
-	keys := make([]interface{}, set.Cardinality())
-	var i = 0
+func (set *threadUnsafeSet) ToSlice() (keys []interface{}) {
+	keys = make([]interface{}, 0, set.Cardinality())
 	for _, elem := range set.anyMap {
-		keys[i] = elem
-		i++
+		keys = append(keys, elem)
 	}
-
 	return keys
 }
 
@@ -317,8 +322,21 @@ func (set *threadUnsafeSet) ThreadSafe() *threadSafeSet {
 	return &threadSafeSet{threadUnsafeSet: *set}
 }
 
-func (set *threadUnsafeSet) Hash() uint64 {
-	return set.hash
+func (set threadUnsafeSet) Hash() uint64 {
+	return set.hashState
+}
+
+func (set *threadUnsafeSet) UpdateHash() (updated int) {
+	set.hashCache = make(map[interface{}]uint64)
+	for hash, elem := range set.anyMap {
+		h := set.hashFor(elem)
+		if hash != h {
+			set.removeWithHash(hash)
+			set.addWithHash(elem, h)
+			updated += 1
+		}
+	}
+	return
 }
 
 func (set *threadUnsafeSet) MarshalJSON() ([]byte, error) {
@@ -358,10 +376,18 @@ func (set *threadUnsafeSet) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-func hashFor(i interface{}) uint64 {
-	h, err := hashstructure.Hash(i, hashOptions)
+func (set *threadUnsafeSet) hashFor(i interface{}) uint64 {
+	if set.options.Cache {
+		if el, ok := set.hashCache[i]; ok {
+			return el
+		}
+	}
+	h, err := hashstructure.Hash(i, set.hashOptions)
 	if err != nil {
 		panic(err)
+	}
+	if set.options.Cache {
+		set.hashCache[i] = h
 	}
 	return h
 }

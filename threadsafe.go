@@ -7,8 +7,8 @@ type threadSafeSet struct {
 	sync.RWMutex
 }
 
-func newThreadSafeSet() threadSafeSet {
-	return threadSafeSet{threadUnsafeSet: newThreadUnsafeSet()}
+func (o SetOptions) newThreadSafeSet() threadSafeSet {
+	return threadSafeSet{threadUnsafeSet: o.newThreadUnsafeSet()}
 }
 
 func (set *threadSafeSet) Add(i ...interface{}) {
@@ -100,7 +100,7 @@ func (set *threadSafeSet) SymmetricDifference(other Set) Set {
 func (set *threadSafeSet) Clear() {
 	set.Lock()
 	defer set.Unlock()
-	set.threadUnsafeSet = newThreadUnsafeSet()
+	set.threadUnsafeSet.Clear()
 }
 
 func (set *threadSafeSet) Remove(i ...interface{}) {
@@ -184,20 +184,22 @@ func (set *threadSafeSet) String() string {
 	return set.threadUnsafeSet.String()
 }
 
-func (set *threadSafeSet) Hash() uint64 {
+func (set threadSafeSet) Hash() uint64 {
 	set.RLock()
 	defer set.RUnlock()
 	return set.threadUnsafeSet.Hash()
 }
 
-func (set *threadSafeSet) PowerSet(threadSafe ...bool) Set {
+func (set *threadSafeSet) UpdateHash() int {
+	set.Lock()
+	defer set.Unlock()
+	return set.threadUnsafeSet.UpdateHash()
+}
+
+func (set *threadSafeSet) PowerSet() Set {
 	set.RLock()
 	defer set.RUnlock()
-	var safe = true
-	if len(threadSafe) > 0 && !threadSafe[0] {
-		safe = false
-	}
-	return set.threadUnsafeSet.PowerSet(safe).ThreadSafe()
+	return set.threadUnsafeSet.PowerSet().ThreadSafe()
 }
 
 func (set *threadSafeSet) Pop() interface{} {

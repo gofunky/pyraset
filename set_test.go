@@ -889,6 +889,98 @@ func Test_UnsafeSetHash(t *testing.T) {
 	}
 }
 
+func Test_SetUpdateHash(t *testing.T) {
+	a := NewSet()
+	b := NewSet()
+
+	a.Add("test")
+	a.Remove("test")
+
+	if a.Hash() != b.Hash() {
+		t.Error("Both a and b are empty sets, and should have the same hashes")
+	}
+
+	subSetA := NewSet("foo")
+	subSetB := NewSet("foo")
+
+	a.Add(subSetA)
+
+	if a.Hash() == b.Hash() {
+		t.Error("a should not be equal to b because b is empty and a has item Set{foo} in it")
+	}
+
+	b.Add(subSetB)
+
+	if a.Hash() != b.Hash() {
+		t.Error("a is now equal again to b because both have the item Set{foo} in them")
+	}
+
+	subSetA.Add("bar")
+
+	if a.Hash() != b.Hash() {
+		t.Error("both sets should be equal since the change in the subset should not be recognized implicitly")
+	}
+
+	updatedA := a.UpdateHash()
+
+	if a.Hash() == b.Hash() || updatedA != 1 {
+		t.Error("a has been updated now and the change in Set{foo, bar} should be recognized")
+	}
+
+	subSetB.Add("bar")
+	updatedB := b.UpdateHash()
+
+	if a.Hash() != b.Hash() || updatedB != 1 {
+		t.Error("a and b should be equal with the same number of elements")
+	}
+}
+
+func Test_UnsafeSetUpdateHash(t *testing.T) {
+	a := NewUnsafeSet()
+	b := NewUnsafeSet()
+
+	a.Add("test")
+	a.Remove("test")
+
+	if a.Hash() != b.Hash() {
+		t.Error("Both a and b are empty sets, and should have the same hashes")
+	}
+
+	subSetA := NewSet("foo")
+	subSetB := NewSet("foo")
+
+	a.Add(subSetA)
+
+	if a.Hash() == b.Hash() {
+		t.Error("a should not be equal to b because b is empty and a has item Set{foo} in it")
+	}
+
+	b.Add(subSetB)
+
+	if a.Hash() != b.Hash() {
+		t.Error("a is now equal again to b because both have the item Set{foo} in them")
+	}
+
+	subSetA.Add("bar")
+
+	if a.Hash() != b.Hash() {
+		t.Error("both sets should be equal since the change in the subset should not be recognized implicitly")
+	}
+
+	updatedA := a.UpdateHash()
+
+	if a.Hash() == b.Hash() || updatedA != 1 {
+		t.Error("a has been updated now and the change in Set{foo, bar} should be recognized")
+	}
+
+	subSetB.Add("bar")
+	updatedB := b.UpdateHash()
+
+	if a.Hash() != b.Hash() || updatedB != 1 {
+		t.Error("a and b should be equal with the same number of elements")
+	}
+}
+
 func Test_SetClone(t *testing.T) {
 	a := NewSet()
 	a.Add(1)

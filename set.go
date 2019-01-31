@@ -6,12 +6,21 @@
 // complexity improvement and that can enforce mutual exclusion through other means.
 package mapset
 
-import "github.com/gofunky/hashstructure"
+import (
+	"github.com/gofunky/hashstructure"
+	"hash"
+)
 
 // Set is the primary interface provided by the mapset package.  It represents an unordered set of data and a
 // large number of operations that can be applied to that set.
 type Set interface {
 	hashstructure.Hashable
+
+	// UpdateHash updates the currently calculated hash of the set.
+	// Use it if underlying elements are mutable and once they may have been changed.
+	// It's not necessary to update the hashes but comparators will treat the element as if was not changed.
+	// UpdateHash returns the number of updated hashes, and thus, the modified elements.
+	UpdateHash() (updated int)
 
 	// Add the given elements to this set.
 	Add(i ...interface{})
@@ -105,8 +114,7 @@ type Set interface {
 	Pop() interface{}
 
 	// PowerSet builds all subsets of a given set (Power Set).
-	// By default, the sub sets derive their thread safety from the parent. Use threadSafe to override the default.
-	PowerSet(threadSafe ...bool) Set
+	PowerSet() Set
 
 	// CartesianProduct builds the Cartesian Product of this set and the given set.
 	CartesianProduct(other Set) Set
@@ -128,10 +136,24 @@ type Set interface {
 	UnmarshalJSON(p []byte) error
 }
 
+// SetOptions contain options that affect the set construction.
+type SetOptions struct {
+	// Cache enables the hashing cache so that previously added items can be quickly looked up.
+	// The cache improves performance of comparable items and builtins.
+	// The performance is only increased since golang hashing is slow due to the reflection used in the byte.Writer.
+	// Unless generics or fast type checks are introduced in golang, this option trades some memory for performance.
+	Cache bool
+	// Unsafe makes the set non-thread-safe.
+	Unsafe bool
+	// Hasher overrides the default hash function.
+	Hasher hash.Hash64
+}
+
 // NewSet creates a set that contains the given elements.
 // Operations on the resulting set are thread-safe.
 func NewSet(elements ...interface{}) Set {
-	set := newThreadSafeSet()
+	options := &SetOptions{Cache: true}
+	set := options.newThreadSafeSet()
 	set.Add(elements...)
 	return &set
 }
@@ -139,7 +161,24 @@ func NewSet(elements ...interface{}) Set {
 // NewUnsafeSet creates a set that contains the given elements.
 // Operations on the resulting set are not thread-safe.
 func NewUnsafeSet(elements ...interface{}) Set {
-	set := newThreadUnsafeSet()
+	options := &SetOptions{
+		Unsafe: true,
+		Cache:  true,
+	}
+	set := options.newThreadUnsafeSet()
 	set.Add(elements...)
 	return &set
+}
+
+// New creates a new set with the given options.
+func (o SetOptions) New(elements ...interface{}) (set Set) {
+	if o.Unsafe {
+		newSet := o.newThreadUnsafeSet()
+		set = &newSet
+	} else {
+		newSet := o.newThreadSafeSet()
+		set = &newSet
+	}
+	set.Add(elements...)
+	return
 }
