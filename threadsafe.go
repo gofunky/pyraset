@@ -185,8 +185,6 @@ func (set *threadSafeSet) String() string {
 }
 
 func (set threadSafeSet) Hash() uint64 {
-	set.RLock()
-	defer set.RUnlock()
 	return set.threadUnsafeSet.Hash()
 }
 

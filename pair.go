@@ -8,6 +8,7 @@ type OrderedPair struct {
 	Second interface{}
 }
 
+// Equal determines of this pair equals the given pair.
 func (pair *OrderedPair) Equal(other OrderedPair) bool {
 	if pair.First == other.First &&
 		pair.Second == other.Second {

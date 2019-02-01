@@ -1,7 +1,7 @@
-// mapset implements a simple and generic set collection. Items stored within it are unordered and unique. It supports
+// Package mapset implements a simple and generic set collection. Items stored within it are unordered and unique. It supports
 // typical set operations: membership testing, intersection, union, difference, symmetric difference and cloning.
 //
-// Package mapset provides two implementations of the Set interface. The default implementation is safe for concurrent
+// mapset provides two implementations of the Set interface. The default implementation is safe for concurrent
 // access, but a non-thread-safe implementation is also provided for programs that can benefit from the slight
 // complexity improvement and that can enforce mutual exclusion through other means.
 package mapset

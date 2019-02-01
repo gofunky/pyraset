@@ -54,7 +54,7 @@ func (set *threadUnsafeSet) Contains(i ...interface{}) bool {
 	}
 	setHash := set.Hash()
 	if argLength == cardinality {
-		var inputHash uint64 = 0
+		var inputHash uint64
 		for _, val := range i {
 			h := set.hashFor(val)
 			inputHash = inputHash ^ h
