@@ -13,7 +13,7 @@ pyraset is an improved version of [golang-set](https://github.com/deckarep/golan
 ## Why another set library
 
 Before `pyraset`, I had been using `golang-set`. It works fine for simple operations on small sets.
-However, I noticed that some `Equal` functions did not work as I expected them to work.
+However, I noticed that some `Equal` calls did not work as I expected them to work.
 
 Take this example:
 
