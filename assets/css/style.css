@@ -1,0 +1,15 @@
+---
+---
+
+@import "{{ site.theme }}";
+body {
+    background-color: #fffefe !important;
+}
+
+section {
+    width: 800px !important;
+}
+
+.wrapper {
+    width: 1160px !important;
+}
