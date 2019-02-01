@@ -1,5 +1,5 @@
 version: 1
 update_configs:
   - package_manager: "go:modules"
-    directory: "/go.mod"
+    directory: "."
     update_schedule: "daily"
