@@ -18,33 +18,33 @@ However, I noticed that some `Equal` calls did not work as I expected them to wo
 Take this example:
 
 ```golang
-    a := NewSet("test")
-	b := NewSet("test")
-	subSetA := NewSet("foo")
-    subSetB := NewSet("foo")
+a := NewSet("test")
+b := NewSet("test")
+subSetA := NewSet("foo")
+subSetB := NewSet("foo")
 
-    // They should be equal, since both contain "test"
-	fmt.Printf("are a and b equal: %v\n", a.Equal(b))
-	// are a and b equal: true -> pass
+// They should be equal, since both contain "test"
+fmt.Printf("are a and b equal: %v\n", a.Equal(b))
+// are a and b equal: true -> pass
 
-	a.Add(subSetA)
+a.Add(subSetA)
 
-    // They should not be equal, only a contains subSetA
-	fmt.Printf("are a and b equal: %v\n", a.Equal(b))
-	//  are a and b equal: false -> pass
+// They should not be equal, only a contains subSetA
+fmt.Printf("are a and b equal: %v\n", a.Equal(b))
+//  are a and b equal: false -> pass
 
-	b.Add(subSetB)
+b.Add(subSetB)
 
-    // Shouldn't they know be equal? Both are Set { "test", Set { "foo" } }
-	fmt.Printf("are a and b equal: %v\n", a.Equal(b))
-	//  are a and b equal: false -> surprise
+// Shouldn't they know be equal? Both are Set { "test", Set { "foo" } }
+fmt.Printf("are a and b equal: %v\n", a.Equal(b))
+//  are a and b equal: false -> surprise
 
-    // Let's try to use subSetA instead
-	b.Remove(subSetB)
-	b.Add(subSetA)
+// Let's try to use subSetA instead
+b.Remove(subSetB)
+b.Add(subSetA)
 
-	fmt.Printf("are a and b equal: %v\n", a.Equal(b))
-	//  are a and b equal: true
+fmt.Printf("are a and b equal: %v\n", a.Equal(b))
+//  are a and b equal: true
 ```
 
 What this example shows, apparently, is that the set doesn't use deep equality checks.
@@ -92,31 +92,31 @@ The update call is optional. If the set operation results only depend on the ori
 #### Example
 
 ```golang
-    a := NewSet("test")
-	b := NewSet("test")
-	subSetA := NewSet("foo")
-    subSetB := NewSet("foo")
-	a.Add(subSetA)
-	b.Add(subSetB)
+a := NewSet("test")
+b := NewSet("test")
+subSetA := NewSet("foo")
+subSetB := NewSet("foo")
+a.Add(subSetA)
+b.Add(subSetB)
 
-	fmt.Printf("are a and b equal: %v\n", a.Equal(b))
-	// are a and b equal: true -> check
+fmt.Printf("are a and b equal: %v\n", a.Equal(b))
+// are a and b equal: true -> check
 
-    subSetA.Add("bar")
-    subSetB.Add("bar")
-	fmt.Printf("are a and b equal: %v\n", a.Equal(b))
-	// are a and b equal: false -> oh no, what's wrong?
+subSetA.Add("bar")
+subSetB.Add("bar")
+fmt.Printf("are a and b equal: %v\n", a.Equal(b))
+// are a and b equal: false -> oh no, what's wrong?
 
-	updatedA := a.UpdateHash()
-    updatedB := b.UpdateHash()
+updatedA := a.UpdateHash()
+updatedB := b.UpdateHash()
 
-	fmt.Printf("are a and b equal: %v\n", a.Equal(b))
-	// are a and b equal: true -> check
-	fmt.Printf("number of updates:\na:%v\nb:%v\n", updatedA, updatedB)
-	// number of updates:
-	// a: 1
-	// b: 1
-	// -> check
+fmt.Printf("are a and b equal: %v\n", a.Equal(b))
+// are a and b equal: true -> check
+fmt.Printf("number of updates:\na:%v\nb:%v\n", updatedA, updatedB)
+// number of updates:
+// a: 1
+// b: 1
+// -> check
 ```
 
 ### Transformed examples as known from `golang-set`
@@ -140,7 +140,8 @@ bonusClasses.Add("Go Programming")
 bonusClasses.Add("Python Programming")
 
 // Show me all the available classes one can take
-allClasses := requiredClasses.Union(scienceClasses).Union(electiveClasses).Union(bonusClasses)
+allClasses := requiredClasses.Union(scienceClasses).
+    Union(electiveClasses).Union(bonusClasses)
 fmt.Println(allClasses)
 // Set{Cooking, English, Math, Chemistry, Welding, Biology, Music, Automotive, Go Programming, Python Programming}
 
