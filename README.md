@@ -2,7 +2,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/deckarep/golang-set)](https://goreportcard.com/report/github.com/deckarep/golang-set)
 [![GoDoc](https://godoc.org/github.com/deckarep/golang-set?status.svg)](http://godoc.org/github.com/deckarep/golang-set)
 
-## golang-set
+## pyraset
 
 
 The missing set collection for the Go language.  Until Go has sets built-in...use this.
@@ -47,21 +47,21 @@ however that the Python set is a built-in type and supports additional features 
 ## Examples but not exhaustive:
 
 ```go
-requiredClasses := mapset.NewSet()
+requiredClasses := pyraset.NewSet()
 requiredClasses.Add("Cooking")
 requiredClasses.Add("English")
 requiredClasses.Add("Math")
 requiredClasses.Add("Biology")
 
 scienceSlice := []interface{}{"Biology", "Chemistry"}
-scienceClasses := mapset.NewSetFromSlice(scienceSlice)
+scienceClasses := pyraset.NewSetFromSlice(scienceSlice)
 
-electiveClasses := mapset.NewSet()
+electiveClasses := pyraset.NewSet()
 electiveClasses.Add("Welding")
 electiveClasses.Add("Music")
 electiveClasses.Add("Automotive")
 
-bonusClasses := mapset.NewSet()
+bonusClasses := pyraset.NewSet()
 bonusClasses.Add("Go Programming")
 bonusClasses.Add("Python Programming")
 
@@ -83,13 +83,7 @@ fmt.Println(scienceClasses.Intersect(requiredClasses)) //Set{Biology}
 fmt.Println(bonusClasses.Cardinality()) //2
 
 //Do you have the following classes? Welding, Automotive and English?
-fmt.Println(allClasses.IsSuperset(mapset.NewSetFromSlice([]interface{}{"Welding", "Automotive", "English"}))) //true
+fmt.Println(allClasses.IsSuperset(pyraset.NewSetFromSlice([]interface{}{"Welding", "Automotive", "English"}))) //true
 ```
 
-Thanks!
-
--Ralph
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/deckarep/golang-set/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
-[![Analytics](https://ga-beacon.appspot.com/UA-42584447-2/deckarep/golang-set)](https://github.com/igrigorik/ga-beacon)
+## Benchmark Results
