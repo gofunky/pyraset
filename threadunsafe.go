@@ -276,25 +276,28 @@ func (set *threadUnsafeSet) PowerSet() Set {
 		}
 	}
 
-	nullset := NewUnsafeSet()
-	powSet := NewUnsafeSet(makeSafe(nullset)).CoreSet()
+	nullset := set.emptySet()
+	powSet := set.emptySet()
+	powSet.addWithHash(makeSafe(nullset), nullset.Hash())
 	var interSlice = make([]Set, 0)
 	interSlice = append(interSlice, nullset)
 
-	for _, es := range set.anyMap {
+	for esHash, es := range set.anyMap {
 		for _, is := range interSlice {
-			newSubset := NewUnsafeSet(es).Union(is)
-			interSlice = append(interSlice, newSubset)
-			powSet.addWithHash(makeSafe(newSubset), newSubset.Hash())
+			newSubset := set.emptySet()
+			newSubset.addWithHash(es, esHash)
+			nextSubset := newSubset.Union(is)
+			interSlice = append(interSlice, nextSubset)
+			powSet.addWithHash(makeSafe(nextSubset), nextSubset.Hash())
 		}
 	}
 
-	return &powSet
+	return powSet
 }
 
 func (set *threadUnsafeSet) CartesianProduct(other Set) Set {
 	o := other.CoreSet()
-	cartProduct := NewUnsafeSet()
+	cartProduct := set.emptySet()
 
 	for _, i := range set.anyMap {
 		for _, j := range o.anyMap {
@@ -374,6 +377,15 @@ func (set *threadUnsafeSet) UnmarshalJSON(b []byte) error {
 	}
 
 	return nil
+}
+
+func (set *threadUnsafeSet) emptySet() *threadUnsafeSet {
+	return &threadUnsafeSet{
+		options:     set.options,
+		hashCache:   set.hashCache,
+		anyMap:      make(map[uint64]interface{}),
+		hashOptions: set.hashOptions,
+	}
 }
 
 func (set *threadUnsafeSet) hashFor(i interface{}) uint64 {

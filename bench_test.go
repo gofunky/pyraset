@@ -86,6 +86,21 @@ func BenchmarkClearUnsafe(b *testing.B) {
 	benchClear(b, NewUnsafeSet())
 }
 
+func benchPop(b *testing.B, s Set) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		s.Pop()
+	}
+}
+
+func BenchmarkPopSafe(b *testing.B) {
+	benchPop(b, NewSet())
+}
+
+func BenchmarkPopUnsafe(b *testing.B) {
+	benchPop(b, NewUnsafeSet())
+}
+
 func benchClone(b *testing.B, n int, s Set) {
 	nums := toInterfaces(nrand(n))
 	for _, v := range nums {
@@ -421,6 +436,84 @@ func BenchmarkIntersect100Safe(b *testing.B) {
 
 func BenchmarkIntersect100Unsafe(b *testing.B) {
 	benchIntersect(b, 100, NewUnsafeSet(), NewUnsafeSet())
+}
+
+func benchPower(b *testing.B, n int, s, t Set) {
+	nums := nrand(int(float64(n) * float64(1.5)))
+	for _, v := range nums[:n] {
+		s.Add(v)
+	}
+	for _, v := range nums[n/2:] {
+		t.Add(v)
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		s.PowerSet()
+	}
+}
+
+func BenchmarkPower1Safe(b *testing.B) {
+	benchPower(b, 1, NewSet(), NewSet())
+}
+
+func BenchmarkPower1Unsafe(b *testing.B) {
+	benchPower(b, 1, NewUnsafeSet(), NewUnsafeSet())
+}
+
+func BenchmarkPower10Safe(b *testing.B) {
+	benchPower(b, 10, NewSet(), NewSet())
+}
+
+func BenchmarkPower10Unsafe(b *testing.B) {
+	benchPower(b, 10, NewUnsafeSet(), NewUnsafeSet())
+}
+
+func BenchmarkPower20Safe(b *testing.B) {
+	benchPower(b, 20, NewSet(), NewSet())
+}
+
+func BenchmarkPower20Unsafe(b *testing.B) {
+	benchPower(b, 20, NewUnsafeSet(), NewUnsafeSet())
+}
+
+func benchCartesianProduct(b *testing.B, n int, s, t Set) {
+	nums := nrand(int(float64(n) * float64(1.5)))
+	for _, v := range nums[:n] {
+		s.Add(v)
+	}
+	for _, v := range nums[n/2:] {
+		t.Add(v)
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		s.CartesianProduct(t)
+	}
+}
+
+func BenchmarkCartesianProduct1Safe(b *testing.B) {
+	benchCartesianProduct(b, 1, NewSet(), NewSet())
+}
+
+func BenchmarkCartesianProduct1Unsafe(b *testing.B) {
+	benchCartesianProduct(b, 1, NewUnsafeSet(), NewUnsafeSet())
+}
+
+func BenchmarkCartesianProduct10Safe(b *testing.B) {
+	benchCartesianProduct(b, 10, NewSet(), NewSet())
+}
+
+func BenchmarkCartesianProduct10Unsafe(b *testing.B) {
+	benchCartesianProduct(b, 10, NewUnsafeSet(), NewUnsafeSet())
+}
+
+func BenchmarkCartesianProduct100Safe(b *testing.B) {
+	benchCartesianProduct(b, 100, NewSet(), NewSet())
+}
+
+func BenchmarkCartesianProduct100Unsafe(b *testing.B) {
+	benchCartesianProduct(b, 100, NewUnsafeSet(), NewUnsafeSet())
 }
 
 func benchSymmetricDifference(b *testing.B, n int, s, t Set) {
