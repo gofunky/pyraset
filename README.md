@@ -172,8 +172,8 @@ fmt.Println(allClasses.IsSuperset(pyraset.NewSet("Welding", "Automotive", "Engli
 The following charts show the ns/op ratios for the different set operations contrasted to `golang-set`.
 The smaller the values, the better the scores are, proportionally to the other ones.
 
-<iframe width="800" height="600" frameborder="0" scrolling="no" src="//plot.ly/~mafax/126.embed"></iframe>
+![safety](https://plot.ly/~mafax/126.png?share_key=PPFM6B1qbM9k30oVbK6Okf)
 
-<iframe width="800" height="1200" frameborder="0" scrolling="no" src="//plot.ly/~mafax/125.embed"></iframe>
+![ns/op](https://plot.ly/~mafax/125.png?share_key=PPFM6B1qbM9k30oVbK6Okf)
 
 More benchmark results can be accessed any analyzed [here](https://plot.ly/~mafax/116/).
