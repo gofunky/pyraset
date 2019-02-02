@@ -1,4 +1,4 @@
-module github.com/gofunky/pyraset
+module github.com/gofunky/pyraset/v2
 
 require (
 	github.com/OneOfOne/xxhash v1.2.2
