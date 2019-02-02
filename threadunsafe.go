@@ -185,6 +185,10 @@ func (set *threadUnsafeSet) Cardinality() int {
 	return len(set.anyMap)
 }
 
+func (set *threadUnsafeSet) Empty() bool {
+	return set.Cardinality() == 0
+}
+
 func (set *threadUnsafeSet) Each(cb func(interface{}) bool) {
 	for _, elem := range set.anyMap {
 		if cb(elem) {
@@ -245,6 +249,9 @@ func (set *threadUnsafeSet) Clone() Set {
 }
 
 func (set *threadUnsafeSet) String() string {
+	if set.Empty() {
+		return "Set{}"
+	}
 	items := bytes.NewBufferString("Set{")
 
 	for _, elem := range set.anyMap {

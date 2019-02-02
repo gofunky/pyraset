@@ -115,6 +115,12 @@ func (set *threadSafeSet) Cardinality() int {
 	return set.threadUnsafeSet.Cardinality()
 }
 
+func (set *threadSafeSet) Empty() bool {
+	set.RLock()
+	defer set.RUnlock()
+	return set.threadUnsafeSet.Empty()
+}
+
 func (set *threadSafeSet) Each(cb func(interface{}) bool) {
 	set.RLock()
 	defer set.RUnlock()

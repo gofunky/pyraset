@@ -28,6 +28,9 @@ type Set interface {
 	// Cardinality determines the number of elements in the set.
 	Cardinality() int
 
+	// Empty determines if the set is empty.
+	Empty() bool
+
 	// Clear removes all elements from the set, leaving the empty set.
 	Clear()
 
