@@ -18,6 +18,15 @@ pyraset is an improved version of [golang-set](https://github.com/deckarep/golan
 go get -u github.com/gofunky/pyraset/v2
 ```
 
+## What to regard when migrating from `golang-set`
+
+Before migrating from `golang-set` to `pyraset`, there a few things to consider.
+Nevertheless, the necessary code changes make your code more awesome.
+
+1. `pyraset` uses simplified constructors, accepting only variadic arguments, check the [docs](https://godoc.org/github.com/gofunky/pyraset) for details.
+2. `Equal` has become deep.
+3. In tests, use [cmp](https://github.com/google/go-cmp) instead of `reflect` for comparisons.
+
 ## Why another set library
 
 Before `pyraset`, I had been using `golang-set`. It works fine for simple operations on small sets.
