@@ -174,6 +174,6 @@ The smaller the values, the better the scores are, proportionally to the other o
 
 ![safety](https://plot.ly/~mafax/126.png?share_key=PPFM6B1qbM9k30oVbK6Okf)
 
-![ns/op](https://plot.ly/~mafax/125.png?share_key=PPFM6B1qbM9k30oVbK6Okf)
+![ns/op](https://plot.ly/~mafax/121.png?share_key=PPFM6B1qbM9k30oVbK6Okf)
 
 More benchmark results can be accessed any analyzed [here](https://plot.ly/~mafax/116/).
