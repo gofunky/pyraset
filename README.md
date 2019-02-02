@@ -10,6 +10,14 @@
 
 pyraset is an improved version of [golang-set](https://github.com/deckarep/golang-set) that features fast structure and subset support
 
+## How to get it
+
+`pyraset` uses go modules and is currently released under the `v2` path.
+
+```bash
+go get -u github.com/gofunky/pyraset/v2
+```
+
 ## Why another set library
 
 Before `pyraset`, I had been using `golang-set`. It works fine for simple operations on small sets.
