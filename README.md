@@ -68,7 +68,7 @@ What this example shows, apparently, is that the set doesn't use deep equality c
 For interface types, that is no surprise, for subsets, however, it is indeed unexpected because even `Power` creates subsets.
 
 In `pyraset`, this is solved by using hashes. So basically, instead of a comparable map as used in `golang-set`, we use a hashmap.
-Hashing, however has a performance tradeoff. `CRUD` operations are more complex, set operations, however, are performing better.
+Hashing, however has a performance tradeoff. `CRUD` operations are more complex, set operations, in contrast, are performing better.
 Some operations perform multiple magnitudes better than `golang-set`.
 
 Hashing gives the user another benefit. `pyraset` uses `hashstructure` and `xxhash` by default.
