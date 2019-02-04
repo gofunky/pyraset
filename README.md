@@ -189,8 +189,8 @@ fmt.Println(allClasses.IsSuperset(pyraset.NewSet("Welding", "Automotive", "Engli
 The following charts show the ns/op ratios for the different set operations contrasted to `golang-set`.
 The smaller the values, the better the scores are, proportionally to the other ones.
 
-![safety](/assets/img/pyraset_safety_performance.png)
+![safety](/docs/assets/img/pyraset_safety_performance.png)
 
-![safety](/assets/img/pyraset_ns_op.png)
+![safety](/docs/assets/img/pyraset_ns_op.png)
 
 More benchmark results can be accessed any analyzed [here](https://plot.ly/~mafax/116/).
