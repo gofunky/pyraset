@@ -9,6 +9,20 @@
     <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
     <link rel="stylesheet" href="{{ "/assets/css/menu.css?v=" | append: site.github.build_revision | relative_url }}">
     <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico">
+
+    <script>
+        (function () {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = 'https://app.termly.io/embed.min.js';
+            s.id = '0c9004dc-b189-42f0-ae48-97aac41f6c07';
+            s.setAttribute("data-name", "termly-embed-banner");
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
+        })();
+    </script>
+
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"
             integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
@@ -40,6 +54,12 @@
                 </div>
                 {% endif %}
                 {% endfor %}
+                <div>
+                    <a class='slide' onclick="displayPreferenceModal()">
+                        <span class='element'>Cookie Preferences</span>
+                        <span class='name'></span>
+                    </a>
+                </div>
             </div>
         </nav>
 

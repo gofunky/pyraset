@@ -60,6 +60,7 @@ nav {
   }
 
   div.nav-container {
+    margin-bottom: 25px;
     display: table-row;
 
     & > div {
@@ -80,10 +81,8 @@ nav {
         }
 
         // set colors for color for active elements
-        & input:checked, .slide.active {
-          & ~ label {
-            color: nth($colors, $i);
-          }
+        & .slide.active {
+          color: darken(nth($colors, $i), 20);
         }
       }
     }
