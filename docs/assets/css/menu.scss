@@ -1,0 +1,171 @@
+---
+---
+
+@mixin transition-mixin($properties...) {
+  $declarations: ();
+
+  @each $declaration in $properties {
+    $duration: .25s;
+    $delay: false;
+    $timing-function: ease;
+    $property: all;
+
+    @if type-of($declaration) == 'map' {
+      $duration: if(map_get($declaration, 'duration'), #{map_get($declaration, 'duration')}, $duration);
+      $delay: if(map_get($declaration, 'delay'), #{map_get($declaration, 'delay')}, $delay);
+      $timing-function: if(map_get($declaration, 'timing-function'), #{map_get($declaration, 'timing-function')}, $timing-function);
+      $property: if(map_get($declaration, 'property'), #{map_get($declaration, 'property')}, $property);
+    } @else {
+      $property: $declaration;
+    }
+
+    $delayValue: if($delay, ' ' + $delay, '');
+    $declarations: append($declarations, #{$property + ' ' + $duration + $delayValue + ' ' + $timing-function}, comma);
+  }
+
+  transition: $declarations;
+}
+
+@function emCalc($pxWidth) {
+  @return $pxWidth / 16 * 1em;
+}
+
+@mixin breakpoint($break) {
+  @if $break == small {
+    @media only screen and (min-width: emCalc(769)) {
+      @content;
+    }
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+$colors: #FBA922, #DD5F18, #404333, #2D3032;
+
+nav {
+  display: table;
+  position: relative;
+  table-layout: fixed;
+  width: 100%;
+
+  // hide and reset form elemetns for dropdowns
+  input {
+    display: none;
+  }
+
+  label {
+    margin: 0;
+  }
+
+  div.nav-container {
+    display: table-row;
+
+    & > div {
+      display: table-cell;
+    }
+
+    // loop through colors list and generate rules on a
+    // per color basis
+    @for $i from 1 through length($colors) {
+      & > div:nth-of-type(#{length($colors)}n+#{$i}) {
+        // apply coloring to menu elements and nested links
+        & .slide, & a {
+          border-color: nth($colors, $i);
+
+          &:hover {
+            color: darken(nth($colors, $i), 20);
+          }
+        }
+
+        // set colors for color for active elements
+        & input:checked, .slide.active {
+          & ~ label {
+            color: nth($colors, $i);
+          }
+        }
+      }
+    }
+  }
+
+  $menu-transition: (
+          property: color,
+          duration: .2s,
+          timing-function: ease-in,
+  );
+
+  // set base transition spees for all a and label elements in the menu
+  a, label {
+    @include transition-mixin($menu-transition);
+  }
+
+  $slide-transition: (
+          delay: .2s,
+          property: border-width,
+          duration: .1s,
+          timing-function: ease-in,
+  );
+
+  // base styling for the sliding elements
+  .slide {
+    padding: 10px 10px;
+    font-size: emCalc(16);
+    display: block;
+    color: #393939;
+    border-top: 4px solid transparent;
+    position: relative;
+
+    // a.slide elements change border width on mouse out
+    @include transition-mixin($slide-transition, $menu-transition);
+
+    .element {
+      font-size: emCalc(20);
+      font-weight: 600;
+      font-style: normal;
+      display: block;
+      line-height: 1;
+    }
+
+    .name {
+      font-size: emCalc(11);
+      position: relative;
+    }
+  }
+}
+
+@include breakpoint(small) {
+  nav {
+    display: block;
+    table-layout: auto;
+
+    div.nav-container {
+      display: block;
+
+      & > div {
+        display: block;
+        margin: 5px 0;
+
+        &:hover .slide {
+          border-left-width: 55px;
+          transition-delay: 0s;
+        }
+      }
+    }
+
+    .slide {
+      display: block;
+      width: auto;
+      border-left: solid 4px #393939;
+      border-top: none;
+
+      .element {
+        line-height: 1;
+      }
+    }
+
+    input:checked ~ .slide {
+      border-width: 55px;
+    }
+  }
+}
