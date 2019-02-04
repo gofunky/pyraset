@@ -43,6 +43,18 @@
             <li><a href="{{ site.github.repository_url }}">View On <strong>GitHub</strong></a></li>
         </ul>
         {% endif %}
+        <ul class="menu">
+            {% assign navigation_pages = site.html_pages | sort: 'navigation_weight' %}
+            {% for p in navigation_pages %}
+            {% if p.navigation_weight %}
+            <li>
+                <a href="{{ p.url }}" {% if p.url== page.url %}class="active" {% endif %}>
+                    {{ p.title }}
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
     </header>
     <section>
 

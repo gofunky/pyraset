@@ -1,5 +1,6 @@
 ---
 title: Privacy Policy
+navigation_weight: 50
 ---
 
 <iframe class="autosize" src="https://policy.gofunky.fun/document/privacy-notice/540c236a-0dd9-4e56-a01d-68d59b2417eb" frameborder="0" allowfullscreen>
