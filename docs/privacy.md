@@ -6,5 +6,5 @@ title: Privacy Policy
   <p>Your browser does not support iframes.</p>
 </iframe>
 <script>
-    iFrameResize({}, 'iframe.autosize')
+    iFrameResize({inPageLinks: true}, 'iframe.autosize')
 </script>
