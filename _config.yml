@@ -1,6 +1,6 @@
 ---
-title: Pyraset
-timezone: UTC
+title: pyraset
+timezone: Europe/Berlin
 collections:
   posts:
     title: Posts
