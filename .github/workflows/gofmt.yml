@@ -40,7 +40,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ matrix.go-version }}
       - name: installing golines
         run: go get -u github.com/segmentio/golines
-      - name: running black
+      - name: running golines
         run: golines .
       - name: creating pull request
         if: ${{ github.head_ref == '' }}
