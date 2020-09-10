@@ -57,9 +57,17 @@ jobs:
             chore
           branch: gofmt
       - name: committing changed files
+        id: committed
         if: ${{ github.head_ref != '' }}
         uses: stefanzweifel/git-auto-commit-action@v4.4.1
         with:
           commit_message: 'style(format): reformat with golines'
           branch: ${{ github.head_ref }}
           file_pattern: '*.go'
+      - uses: christianvuerings/add-labels@v1.1
+        if: ${{ steps.committed.outputs.changes_detected == 'true' }}
+        with:
+          labels: |
+            style
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
