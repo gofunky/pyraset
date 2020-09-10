@@ -29,10 +29,12 @@ jobs:
         uses: actions/setup-go@v2.1.2
         with:
           go-version: ${{ matrix.go-version }}
+      - name: "get golang version"
+        run: echo "::set-env name=golang-version::$(go version)"
       - uses: actions/cache@v2.1.1
         with:
           path: ~/go
-          key: ${{ runner.os }}-go-${{ matrix.go-version }}
+          key: ${{ runner.os }}-go-${{ env.golang-version }}
       - name: installing golines
         run: go get -u github.com/segmentio/golines
       - uses: actions/checkout@v2.3.2
@@ -41,7 +43,7 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.PAT }}
       - name: running golines
-        run: golines --max-len=120 --reformat-tags --write-output ./...
+        run: golines --max-len=120 --reformat-tags --write-output .
       - name: creating pull request
         if: ${{ github.head_ref == '' }}
         uses: peter-evans/create-pull-request@v3.3.0
