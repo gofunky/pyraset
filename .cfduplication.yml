@@ -1,2 +1,2 @@
 IgnorePatterns:
-  - **/*_test.go
+  - '**/*_test.go'
