@@ -1,0 +1,2 @@
+IgnorePatterns:
+  - **/*_test.go
