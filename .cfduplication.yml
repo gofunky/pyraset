@@ -1,2 +1,4 @@
+MinLineCount: 10
+
 IgnorePatterns:
   - '**/*_test.go'
