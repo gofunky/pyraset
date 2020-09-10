@@ -190,7 +190,7 @@ func (set *threadSafeSet) String() string {
 	return set.threadUnsafeSet.String()
 }
 
-func (set threadSafeSet) Hash() uint64 {
+func (set *threadSafeSet) Hash() uint64 {
 	return set.threadUnsafeSet.Hash()
 }
 
