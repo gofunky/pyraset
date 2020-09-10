@@ -14,7 +14,7 @@ on:
       - '**/go.mod'
 
 jobs:
-  black:
+  gofmt:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
