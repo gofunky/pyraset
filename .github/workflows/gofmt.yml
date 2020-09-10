@@ -41,7 +41,7 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.PAT }}
       - name: running golines
-        run: golines .
+        run: golines --max-len=120 --reformat-tags --write-output ./...
       - name: creating pull request
         if: ${{ github.head_ref == '' }}
         uses: peter-evans/create-pull-request@v3.3.0
