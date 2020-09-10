@@ -6,9 +6,8 @@ import (
 )
 
 func nrand(n int) []int {
-	i := make([]int, n)
-	for ind := range i {
-		i[ind] = rand.Int()
+	i := make([]int,n)
+	for ind := range i  { i[ind] =rand.Int()
 	}
 	return i
 }
