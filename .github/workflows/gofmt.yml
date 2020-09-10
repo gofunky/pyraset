@@ -1,0 +1,63 @@
+name: check go format
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - '**.go'
+      - '**/go.mod'
+      - '**/gofmt.yml'
+  pull_request_target:
+    branches: [ master ]
+    paths:
+      - '**.go'
+      - '**/go.mod'
+
+jobs:
+  black:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        go-version: [1.15]
+        os: [ubuntu-latest]
+    name: check go format
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v2.3.2
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
+      - name: setup go ${{ matrix.go-version }}
+        uses: actions/setup-go@v2.1.2
+        with:
+          go-version: ${{ matrix.go-version }}
+      - uses: actions/cache@v2.1.1
+        with:
+          path: ~/go
+          key: ${{ runner.os }}-go-${{ matrix.go-version }}
+      - name: installing golines
+        run: go get -u github.com/segmentio/golines
+      - name: running black
+        run: golines .
+      - name: creating pull request
+        if: ${{ github.head_ref == '' }}
+        uses: peter-evans/create-pull-request@v3.3.0
+        with:
+          commit-message: 'style(format): reformat with golines'
+          title: 'style(format): reformat golang code'
+          body: |
+            This pull requests deploys updates the code style using [golines](https://github.com/segmentio/golines).
+          labels: |
+            style
+            chore
+          branch: gofmt
+      - name: committing changed files
+        if: ${{ github.head_ref != '' }}
+        uses: stefanzweifel/git-auto-commit-action@v4.4.1
+        with:
+          commit_message: 'style(format): reformat with golines'
+          branch: ${{ github.head_ref }}
+          file_pattern: '*.go'
