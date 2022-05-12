@@ -26,7 +26,7 @@ jobs:
         shell: bash
     steps:
       - name: setup go ${{ matrix.go-version }}
-        uses: actions/setup-go@v2.1.5
+        uses: actions/setup-go@v3.1.0
         with:
           go-version: ${{ matrix.go-version }}
       - name: "get golang version"
