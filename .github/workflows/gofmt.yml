@@ -46,7 +46,7 @@ jobs:
         run: golines --max-len=120 --reformat-tags --write-output .
       - name: creating pull request
         if: ${{ github.head_ref == '' }}
-        uses: peter-evans/create-pull-request@v3.3.0
+        uses: peter-evans/create-pull-request@v4.2.3
         with:
           commit-message: 'style(format): reformat with golines'
           title: 'style(format): reformat golang code'
